@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: candleplot-trade
-Version: 0.5
+Version: 0.7
 Summary: online trading based on indicators and candles
 Home-page: UNKNOWN
 Author-email: info@zungl.ru
@@ -84,6 +84,9 @@ Description: # base trading bot. mathematics of mechanical trading systems
         
         ## Link to github page
         https://github.com/zungl/base-trading-bot.mathematics-of-mechanical-trading-systems
+        
+        ## Link to pip
+        https://pypi.org/project/candleplot-trade/
         
 Platform: UNKNOWN
 Description-Content-Type: text/markdown

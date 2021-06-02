@@ -1,1 +1,6 @@
-requests<=2.21.0
+pandas
+numpy
+yfinance
+matplotlib
+plotly
+IPython.display
