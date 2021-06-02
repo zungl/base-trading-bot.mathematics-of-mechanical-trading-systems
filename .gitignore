@@ -7,3 +7,6 @@ __pycache__/indicators.cpython-38.pyc
 __pycache__/helpfuncs.cpython-38.pyc
 __pycache__/figures.cpython-38.pyc
 График фигур для цен акций МТС-ао.html
+build
+candleplot_trade.egg-info
+dist
