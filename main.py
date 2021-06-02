@@ -41,6 +41,7 @@ CPF.set_traid_strategy('simple', indicators = indicators, money = 300000)
 
 ## Начать торговлю в реальном времени
 # CPF.start(refresh_time = 5, get_period = '10m')
+
 ## Проверка дохоности отдельных индикаторов
 # CPF.train(end = None, money = 100000)
 

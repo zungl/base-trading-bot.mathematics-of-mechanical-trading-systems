@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='candleplot_trade',
-      version='0.15',
+      version='0.16',
       description='online trading based on indicators and candles',
       packages=['candleplot_trade'],
       author_email='info@zungl.ru',

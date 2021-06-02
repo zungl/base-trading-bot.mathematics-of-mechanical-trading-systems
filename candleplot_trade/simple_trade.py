@@ -68,12 +68,12 @@ class simple_trade():
         if self.full_console_log:
             print(f'Обучение стратегии {self.strategy}')
         self.income_dict = {}
-        indicators_list = [['buy_and_hold'], #['atr', 'macd'], ['atr', 'rsi'], ['atr', 'bollinger'],
-                        # ['atr', 'aroon'], ['atr', 'stohasctic'], ['atr', 'stohasctic_sma'],
-                                # ['macd'], ['rsi'], ['bollinger'],
-                                # ['aroon'], ['stohasctic'], ['stohasctic_sma'],
-                                # ['atr', 'black_maribozu', 'white_maribozu'], ['atr', 'solders', 'crows'],
-                                # ['black_maribozu', 'white_maribozu'],
+        indicators_list = [['buy_and_hold'], ['atr', 'macd'], ['atr', 'rsi'], ['atr', 'bollinger'],
+                        ['atr', 'aroon'], ['atr', 'stohasctic'], ['atr', 'stohasctic_sma'],
+                                 ['macd'], ['rsi'], ['bollinger'],
+                                 ['aroon'], ['stohasctic'], ['stohasctic_sma'],
+                                 ['atr', 'black_maribozu', 'white_maribozu'], ['atr', 'solders', 'crows'],
+                                 ['black_maribozu', 'white_maribozu'],
                                 ['solders', 'crows']]
         for ind in indicators_list:
             print(f'Работа индекса {ind}')

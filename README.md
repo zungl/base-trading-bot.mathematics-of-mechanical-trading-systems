@@ -72,6 +72,9 @@ CPF.set_traid_strategy('simple', indicators = indicators, money = 300000)
 ## run test trade for previous periods
 CPF.trade_several(start_idx = 220)
 
+## get profit by each indicator
+CPF.train(end = None, money = 100000)
+
 ## run trade in real time
 CPF.start(refresh_time = 5)
 
