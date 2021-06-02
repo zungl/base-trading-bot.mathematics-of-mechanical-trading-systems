@@ -3,7 +3,7 @@ from candleplot_trade import candleplotfigures
 
 ## Создание эеземпляра с параметрами для тикера
 CPF = candleplotfigures(ticker = 'BTC-USD', # 'BTC-USD', 'GOOG'
-                        period = "1d",
+                        period = "30m",
                         # start= '2021-05-25 14:38:00-04:00',
                         interval = "1m",
                         html_log = True,
