@@ -5,11 +5,11 @@ from .simple_trade import simple_trade
 
 class trade(simple_trade):
     def __init__(self):
-        # self.strategy_indicators = ['ivar', 'atr',
-        #                         'macd', 'rsi', 'bollinger',
-        #                         'aroon', 'stohasctic', 'stohasctic_sma',
-        #                         'black_maribozu', 'white_maribozu',
-        #                         'solders', 'crows']
+        self.all_indicators = ['ivar', 'atr',
+                                'macd', 'rsi', 'bollinger',
+                                'aroon', 'stohasctic', 'stohasctic_sma',
+                                'black_maribozu', 'white_maribozu',
+                                'solders', 'crows']
         self.indicators_range = ['macd', 'rsi', 'bollinger',
                                 'aroon', 'stohasctic', 'stohasctic_sma',
                                 'black_maribozu', 'white_maribozu',
@@ -88,9 +88,9 @@ class trade(simple_trade):
                 print(f'Принятие решение по стратегии {self.strategy} на данных за {idx}, дата: {self.data.df.index[idx]}')
             self.__simple_trade_trade(idx = idx)
 
-    def train(self, end = None):
+    def train(self, end = None, money = 10000):
         if self.strategy == 'simple':
-            self.__simple_trade_train(end = end)
+            self.__simple_trade_train(money = money,end = end)
 
     def trade_several(self, start_idx = None, plot = True):
         if start_idx is None:
@@ -103,15 +103,17 @@ class trade(simple_trade):
                 self.trade(idx = idx)
             self.organise_buy_sell()
             self.count_income(start_idx = start_idx, final = True)
-            self.plot()
+            if plot:
+                self.plot()
 
-    def start(self, refresh_time = 10):
+    def start(self, refresh_time = 10, get_period = None):
+        self.get_period = get_period
         if self.strategy is None:
             raise NoStrategyError
         self.trade()
         self.plot()
         while True:
-            new_data = self.data.update_data()
+            new_data = self.data.update_data(period=self.get_period)
             if new_data is not None:
                 if len(new_data) > 2:
                     print(f'Было получено {len(new_data)-1} новых значений за раз! Уменьшите refresh_time!')

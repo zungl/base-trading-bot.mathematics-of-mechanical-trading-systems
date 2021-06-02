@@ -56,7 +56,7 @@ class plot_class():
         rows, cols = 1, 1
         row_heights = [1]
 
-        if ('all' in figures) or ('atr' in figures) or ('macd' in figures) or ('rsi' in figures) or ('bollinger' in figures) or ('ivar' in figures) or ('aroon' in figures) or ('stohasctic' in figures):
+        if ('all' in figures) or ('atr' in figures) or ('macd' in figures) or ('rsi' in figures) or ('bollinger' in figures) or ('ivar' in figures) or ('aroon' in figures) or ('stohasctic' in figures) or ('stohasctic_sma' in figures):
             rows = 2
             cols = 1
             row_heights = [0.8, 0.2]
@@ -122,7 +122,7 @@ class plot_class():
                             x=self.data.df.index[int(len(self.data.df.index)*0.6)],
                             y=1.125,
                             showarrow=False,
-                            text=f'<b>Стартовый капитал: </b>{self.start_money}<br><b>Денег: </b>{self.money}, <b>Акций: </b>{self.shares}<br><b>Текущая доходность:</b> {self.income}<br><b>Кол-во операций:</b> {self.operations}<br><b>Использованные индикаторы: </b>{", ".join(self.strategy_indicators[:-2])}',
+                            text=f'<b>Стартовый капитал: </b>{self.start_money}<br><b>Денег: </b>{self.money}, <b>Акций: </b>{self.shares}<br><b>Текущая доходность:</b> {self.income}, {self.income/self.start_money*100:.2f}%<br><b>Кол-во операций:</b> {self.operations}<br><b>Использованные индикаторы: </b>{", ".join(str(x) for x in self.strategy_indicators[:-2])}',
                             textangle=0,
                             xref="x",
                             yref="paper",

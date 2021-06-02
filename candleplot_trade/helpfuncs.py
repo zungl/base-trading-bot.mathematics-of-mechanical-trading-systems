@@ -8,12 +8,12 @@ class data_class():
         self.interval = interval
         self.full_console_log = full_console_log
 
-    def get_data(self, start, end = None, period = None):
+    def get_data(self, start = None, period = None):
         if self.full_console_log:
             print(f'Получение данных о цене {self.ticker}...')
         ticker = self.ticker
         tickerData = yf.Ticker(ticker)
-        new_data = tickerData.history(interval = self.interval, start=start, end=end, period = period)
+        new_data = tickerData.history(interval = self.interval, start=start, period = period)
         if self.full_console_log:
             print(f'Данные получены. Кол-во наблюдений: {len(new_data)-1}')
         return new_data
@@ -41,8 +41,13 @@ class data_class():
         ## Создаём списик экстремумов
         self.__local_extrems()
 
-    def update_data(self):
-        new_data = self.get_data(start = self.df.index[-1])
+    def update_data(self, period = None):
+        if self.full_console_log:
+            print(f'Последняя известная стоимость: {self.df.index[-1]}')
+        if period is None:
+            new_data = self.get_data(start = self.df.index[-1])
+        else:
+            new_data = self.get_data(period = period)
         new_data = new_data[new_data.index > self.df.index[-1]]
         if len(new_data) > 1:
             self.load_data(pd.concat([self.df, new_data[:-1]]))

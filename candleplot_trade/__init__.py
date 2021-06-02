@@ -56,7 +56,7 @@ df - pd.DataFrame()
         if df != None:
             self.df = df[['Open', 'High', 'Low', 'Close']].reset_index()
         elif ticker != None:
-            df = self.data.get_data(start=start, end=end, period=period)[:-1]
+            df = self.data.get_data(start=start, period=period)[:-1]
             self.start_idx = len(df)-1
             self.start_line = self.start_idx-1
         else:

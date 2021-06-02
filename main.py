@@ -2,13 +2,13 @@
 from candleplot_trade import candleplotfigures
 
 ## Создание эеземпляра с параметрами для тикера
-CPF = candleplotfigures(ticker = 'BTC-USD', # 'BTC-USD', 'GOOG'
-                        period = "30m",
+CPF = candleplotfigures(ticker = 'QIWI', # 'BTC-USD', 'GOOG', 'SBER.ME', 'AFLT.ME'
+                        period = "50d",
                         # start= '2021-05-25 14:38:00-04:00',
-                        interval = "1m",
+                        interval = "1d",
                         html_log = True,
                         console_log = True,
-                        full_console_log = True,
+                        full_console_log = False,
                         buy_commission = 0.003,
                         sell_commission = 0.003,
                         return_plot = True,
@@ -33,13 +33,17 @@ indicators = [
             'black_maribozu', 'white_maribozu',
             'solders', 'crows'
             ]
+
 CPF.set_traid_strategy('simple', indicators = indicators, money = 300000)
 
 ## Тестовая торговля
 # CPF.trade_several(start_idx = 300)
 
 ## Начать торговлю в реальном времени
-CPF.start(refresh_time = 5)
+# CPF.start(refresh_time = 5, get_period = '10m')
+
+## Проверка дохоности отдельных индикаторов
+CPF.train(end = None, money = 100000)
 
 # # График индикаторов
 # CPF.indicators.atr(TR = [14, 100])
