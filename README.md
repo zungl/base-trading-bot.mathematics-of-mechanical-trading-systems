@@ -13,13 +13,13 @@ example of usage:
 from candleplot_trade_library import candleplotfigures
 
 ## creating instance
-CPF = candleplotfigures(ticker = 'BTC-USD', # 'BTC-USD', 'GOOG'
-                        period = "1d",
-                        # start= '2021-05-25 14:38:00-04:00',
-                        interval = "1m",
-                        html_log = True,
-                        full_console_log = True,
-                        buy_commission = 0.003,
+CPF = candleplotfigures(ticker = 'BTC-USD', # 'BTC-USD', 'GOOG'<br>
+                        period = "1d",<br>
+                        # start= '2021-05-25 14:38:00-04:00',<br>
+                        interval = "1m",<br>
+                        html_log = True,<br>
+                        full_console_log = True,<br>
+                        buy_commission = 0.003,<br>
                         sell_commission = 0.003)
                         
 ## getting indicators plot
