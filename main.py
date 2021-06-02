@@ -3,7 +3,7 @@ from candleplot_trade import candleplotfigures
 
 ## Создание эеземпляра с параметрами для тикера
 CPF = candleplotfigures(ticker = 'QIWI', # 'BTC-USD', 'GOOG', 'SBER.ME', 'AFLT.ME'
-                        period = "50d",
+                        period = "100d",
                         # start= '2021-05-25 14:38:00-04:00',
                         interval = "1d",
                         html_log = True,
@@ -13,7 +13,7 @@ CPF = candleplotfigures(ticker = 'QIWI', # 'BTC-USD', 'GOOG', 'SBER.ME', 'AFLT.M
                         sell_commission = 0.003,
                         return_plot = True,
                         save_html = False,
-                        text_size = 8)
+                        text_size = 12)
 
 ## Полигон
 # indicators = ['ivar', 'atr',
@@ -41,9 +41,8 @@ CPF.set_traid_strategy('simple', indicators = indicators, money = 300000)
 
 ## Начать торговлю в реальном времени
 # CPF.start(refresh_time = 5, get_period = '10m')
-
 ## Проверка дохоности отдельных индикаторов
-CPF.train(end = None, money = 100000)
+# CPF.train(end = None, money = 100000)
 
 # # График индикаторов
 # CPF.indicators.atr(TR = [14, 100])

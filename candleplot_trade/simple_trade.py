@@ -15,7 +15,10 @@ class simple_trade():
             self.buy_sell_list += [0]*(len(self.data.df) - len(self.buy_sell_list))
 
         decision = {}
-        flat = True
+        if ('ivar' in self.strategy_indicators) or ('atr' in self.strategy_indicators):
+            flat = True
+        else:
+            flat = False
         ## Flat recognition
         if ('ivar' in self.strategy_indicators) or ('all' in self.strategy_indicators):
             if self.indicators.ivar_flat[idx] < 0.5:
@@ -50,32 +53,33 @@ class simple_trade():
         ## bollinger_size
         # if ('bollinger_size' in self.strategy_indicators) or ('all' in self.strategy_indicators):
         #     decision['bollinger_size'] = self.indicators.bollinger_size[idx]
-
-        for ind in self.indicators_range:
-            # print(ind, decision[ind])
-            if ind in decision.keys():
-                if decision[ind] == 0:
-                    continue
-                if decision[ind] == 1:
-                    self.buy_sell_list[idx] = 1
-                if decision[ind] == -1:
-                    self.buy_sell_list[idx] = -1
+        if not flat:
+            for ind in self.indicators_range:
+                # print(ind, decision[ind])
+                if ind in decision.keys():
+                    if decision[ind] == 0:
+                        continue
+                    if decision[ind] == 1:
+                        self.buy_sell_list[idx] = 1
+                    if decision[ind] == -1:
+                        self.buy_sell_list[idx] = -1
 
     def _trade__simple_trade_train(self, money, end = None):
         if self.full_console_log:
             print(f'Обучение стратегии {self.strategy}')
         self.income_dict = {}
-        indicators_list = [['buy_and_hold'], ['ivar', 'atr', 'macd'], ['ivar', 'atr', 'rsi'], ['ivar', 'atr', 'bollinger'],
-                        ['ivar', 'atr', 'aroon'], ['ivar', 'atr', 'stohasctic'], ['ivar', 'atr', 'stohasctic_sma'],
-                                ['macd'], ['rsi'], ['bollinger'],
-                                ['aroon'], ['stohasctic'], ['stohasctic_sma'],
-                                ['ivar', 'atr', 'black_maribozu', 'white_maribozu'], ['ivar', 'atr', 'solders', 'crows'],
-                                ['black_maribozu', 'white_maribozu'],
+        indicators_list = [['buy_and_hold'], #['atr', 'macd'], ['atr', 'rsi'], ['atr', 'bollinger'],
+                        # ['atr', 'aroon'], ['atr', 'stohasctic'], ['atr', 'stohasctic_sma'],
+                                # ['macd'], ['rsi'], ['bollinger'],
+                                # ['aroon'], ['stohasctic'], ['stohasctic_sma'],
+                                # ['atr', 'black_maribozu', 'white_maribozu'], ['atr', 'solders', 'crows'],
+                                # ['black_maribozu', 'white_maribozu'],
                                 ['solders', 'crows']]
         for ind in indicators_list:
             print(f'Работа индекса {ind}')
             if ind == ['buy_and_hold']:
-                self.income_dict[str(ind)] = (money//self.data.CLOSE[-1]*(1+self.buy_commission)) * self.data.CLOSE[0]*(1-self.sell_commission) #+ (money - (money//self.data.CLOSE[-1]*(1+self.buy_commission))*self.data.CLOSE[-1]*(1+self.buy_commission))
+                self.income_dict[str(ind)] = (money//(self.data.CLOSE[0])) * (self.data.CLOSE[-1]) - money
+                # print((self.income_dict[str(ind)]/money))
             else:
                 self.set_traid_strategy(strategy = 'simple', indicators = ind, money = money)
                 self.trade_several(start_idx = 1, plot = True)
@@ -87,7 +91,7 @@ class simple_trade():
         if self.console_log:
             print('Своднаятаблица результатов')
             for ind, profit in self.income_dict.items():
-                print(f'{ind}: {profit/self.start_money*100:.2f}')
+                print(f'{ind}: {profit/money*100:.2f}%')
             # print(self.income_dict)
 
         if end == None:
