@@ -36,7 +36,7 @@ class plot_class():
                 font=dict(
 #                             family="Courier New, monospace",
                     size=12,
-                    color="black"
+                    # color="black"
               ))
 
         self.fig.update(layout_xaxis_rangeslider_visible=False)

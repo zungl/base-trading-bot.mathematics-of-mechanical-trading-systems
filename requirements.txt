@@ -2,5 +2,5 @@ pandas
 numpy
 yfinance
 matplotlib
-plotly
-IPython.display
+plotly==4.13.0
+IPython
