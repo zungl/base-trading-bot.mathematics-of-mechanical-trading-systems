@@ -1,5 +1,5 @@
-from collections import defaultdict
+# from collections import defaultdict
 
 class figures():
-    def __init__(self, df):
+    def __init__(self, df, indicator_params):
         pass

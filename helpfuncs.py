@@ -1,36 +1,54 @@
 import numpy as np
 import pandas as pd
+import yfinance as yf
 
-class helpfuncs():
-    def __init__(self, df):
-        pass
+class data_class():
+    def __init__(self, ticker, interval, full_console_log):
+        self.ticker = ticker
+        self.interval = interval
+        self.full_console_log = full_console_log
 
-    def preprocessing(self, df):
-        self.df = df[['<OPEN>', '<HIGH>', '<LOW>', '<CLOSE>', '<DATE>']].reset_index()
+    def get_data(self, start, end = None, period = None):
+        if self.full_console_log:
+            print(f'Получение данных о цене {self.ticker}...')
+        ticker = self.ticker
+        tickerData = yf.Ticker(ticker)
+        new_data = tickerData.history(interval = self.interval, start=start, end=end, period = period)
+        if self.full_console_log:
+            print(f'Данные получены. Кол-во наблюдений: {len(new_data)-1}')
+        return new_data
 
+    def load_data(self, df):
+        self.df = df.copy()
         ## Шкалированные данные
         ## Для нахождения фигур будут исользоваться шкалированные данные
         ## Для построения графиков - исходные
-        self.OPEN = (self.df['<OPEN>'] - np.min(self.df['<OPEN>']))/(np.max(self.df['<OPEN>']) -
-                                                                       np.min(self.df['<OPEN>']))
-        self.CLOSE = (self.df['<CLOSE>'] - np.min(self.df['<CLOSE>']))/(np.max(self.df['<CLOSE>']) -
-                                                                          np.min(self.df['<CLOSE>']))
-        self.LOW = (self.df['<LOW>'] - np.min(self.df['<LOW>']))/(np.max(self.df['<LOW>']) -
-                                                                    np.min(self.df['<LOW>']))
-        self.HIGH = (self.df['<HIGH>'] - np.min(self.df['<HIGH>']))/(np.max(self.df['<HIGH>']) -
-                                                                       np.min(self.df['<HIGH>']))
+        # self.OPEN = (self.df.Open - np.min(self.df.Open))/(np.max(self.df.Open) -
+        #                                                                np.min(self.df.Open))
+        # self.CLOSE = (self.df.Close - np.min(self.df.Close))/(np.max(self.df.Close) -
+        #                                                                   np.min(self.df.Close))
+        # self.LOW = (self.df.Low - np.min(self.df.Low))/(np.max(self.df.Low) -
+        #                                                             np.min(self.df.Low))
+        # self.HIGH = (self.df.High - np.min(self.df.High))/(np.max(self.df.High) -
+        #                                                                np.min(self.df.High))
+        # self.DATE = np.array(df.index)
 
-        self.DATE = np.array(df['<DATE>'])
-
-        # ## создание маски свечей
-        # self.red_candles = [True if x[0] > x[1] else False
-        #                  for x in zip(self.OPEN, self.CLOSE)]
-        # self.green_candles = [False if x[0] > x[1] else True
-        #                  for x in zip(self.OPEN, self.CLOSE)]
+        self.OPEN = self.df.Open
+        self.CLOSE = self.df.Close
+        self.LOW = self.df.Low
+        self.HIGH =  self.df.High
 
         ## Создаём списик экстремумов
         self.__local_extrems()
 
+    def update_data(self):
+        new_data = self.get_data(start = self.df.index[-1])
+        new_data = new_data[new_data.index > self.df.index[-1]]
+        if len(new_data) > 1:
+            self.load_data(pd.concat([self.df, new_data[:-1]]))
+            return new_data
+        else:
+            return None
 
     def __local_extrems(self):
         '''
@@ -45,28 +63,28 @@ class helpfuncs():
         (даты, когда цена в следующий и предыдущий день были ниже текущей)
         где type: body (тело свечи), high, low
         '''
-        self.body_top_original = np.maximum(self.df['<OPEN>'], self.df['<CLOSE>'])
-        self.body_down_original = np.minimum(self.df['<OPEN>'], self.df['<CLOSE>'])
+        self.body_top_original = np.maximum(self.df.Open, self.df.Close)
+        self.body_down_original = np.minimum(self.df.Open, self.df.Close)
 
-        self.body_top = np.maximum(self.OPEN, self.CLOSE)
-        self.body_down = np.minimum(self.OPEN, self.CLOSE)
-
-        self.local_body_min = (self.body_down <= np.concatenate([[max(self.body_down)],
-                                                                 self.body_down[:-1]])) & (self.body_down <
-                                                        np.concatenate([self.body_down[1:], [max(self.body_down)]]))
-        self.local_body_min = np.where(self.local_body_min==True)[0]
-
-        self.local_body_max = (self.body_top >= np.concatenate([[0], self.body_top[:-1]])) & (self.body_top >
-                                                        np.concatenate([self.body_top[1:], [0]]))
-        self.local_body_max = np.where(self.local_body_max==True)[0]
-
-        self.local_high_max = (self.HIGH >= np.concatenate([[0], self.HIGH[:-1]])) & (self.HIGH >
-                                                        np.concatenate([self.HIGH[1:], [0]]))
-        self.local_high_max = np.where(self.local_high_max==True)[0]
-
-        self.local_low_min = (self.LOW <= np.concatenate([[max(self.LOW)], self.LOW[:-1]])) & (self.LOW <
-                                                        np.concatenate([self.LOW[1:], [max(self.LOW)]]))
-        self.local_low_min = np.where(self.local_low_min==True)[0]
+        # self.body_top = np.maximum(self.OPEN, self.CLOSE)
+        # self.body_down = np.minimum(self.OPEN, self.CLOSE)
+        #
+        # self.local_body_min = (self.body_down <= np.concatenate([[max(self.body_down)],
+        #                                                          self.body_down[:-1]])) & (self.body_down <
+        #                                                 np.concatenate([self.body_down[1:], [max(self.body_down)]]))
+        # self.local_body_min = np.where(self.local_body_min==True)[0]
+        #
+        # self.local_body_max = (self.body_top >= np.concatenate([[0], self.body_top[:-1]])) & (self.body_top >
+        #                                                 np.concatenate([self.body_top[1:], [0]]))
+        # self.local_body_max = np.where(self.local_body_max==True)[0]
+        #
+        # self.local_high_max = (self.HIGH >= np.concatenate([[0], self.HIGH[:-1]])) & (self.HIGH >
+        #                                                 np.concatenate([self.HIGH[1:], [0]]))
+        # self.local_high_max = np.where(self.local_high_max==True)[0]
+        #
+        # self.local_low_min = (self.LOW <= np.concatenate([[max(self.LOW)], self.LOW[:-1]])) & (self.LOW <
+        #                                                 np.concatenate([self.LOW[1:], [max(self.LOW)]]))
+        # self.local_low_min = np.where(self.local_low_min==True)[0]
 
 
     def rolling(self, data, m = 4):
