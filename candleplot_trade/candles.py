@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from decisions import *
+from .decisions import *
 
 class candles(candles_decision):
     def __init__(self, data, candles_params):

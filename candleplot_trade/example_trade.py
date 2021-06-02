@@ -1,4 +1,4 @@
-from errors import *
+from .errors import *
 import pandas as pd
 
 class simple_trade():

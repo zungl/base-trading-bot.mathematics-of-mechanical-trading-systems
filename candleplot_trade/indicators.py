@@ -1,7 +1,7 @@
 # from helpfuncs import helpfuncs
 import pandas as pd
 import numpy as np
-from decisions import *
+from .decisions import *
 
 class indicators(indicators_decision):
     def __init__(self, data, indicator_params):
@@ -74,7 +74,7 @@ class indicators(indicators_decision):
         if EMA1 is None:
             EMA1 = self.indicator_params.rsi_ema1
         else:
-            self.indicator_params.rsi_ema1 = N
+            self.indicator_params.rsi_ema1 = EMA1
         if EMA2 is None:
             EMA2 = self.indicator_params.rsi_ema2
         else:

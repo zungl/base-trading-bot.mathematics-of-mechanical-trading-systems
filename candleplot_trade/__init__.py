@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
 
-from errors import *
-from params import *
-from plot import plot_class
-from figures import figures
-from indicators import indicators
-from candles import candles
-from trade import trade
-from helpfuncs import data_class
+from .errors import *
+from .params import *
+from .plot import plot_class
+from .figures import figures
+from .indicators import indicators
+from .candles import candles
+from .trade import trade
+from .helpfuncs import data_class
 
 class candleplotfigures(plot_class, trade, data_class):
     '''
@@ -34,8 +34,14 @@ df - pd.DataFrame()
                  txt_log = True,
                  html_log = False,
                  buy_commission = 0,
-                 sell_commission = 0):
+                 sell_commission = 0,
+                 return_plot = True,
+                 save_html = False,
+                 text_size = 8):
         super().__init__()
+        self.text_size = text_size
+        self.return_plot = return_plot
+        self.save_html = save_html
         self.strategy = None
         self.ticker = ticker
         self.interval = interval

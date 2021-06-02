@@ -3,6 +3,7 @@ import plotly.graph_objects as go ## Для отрисовки графиков 
 import plotly.subplots as subplots
 import plotly
 import numpy as np
+from IPython.display import clear_output
 
 class plot_class():
     def __plotly_Candlestick(self, rows = 1, cols = 1, row_heights = [1]):
@@ -42,10 +43,16 @@ class plot_class():
         # self.fig.update(margin=dict(t=150))
         return self.fig
 
-    def plot(self, figures = None, return_plot = False, save_html = True):
+    def plot(self, figures = None, return_plot = None, save_html = None):
+        if return_plot is None:
+            return_plot = self.return_plot
+        if save_html is None:
+            save_html = self.save_html
+
         if figures is None:
             figures = self.strategy_indicators
-            figures += ['train_line_plot', 'stats']
+            if 'train_line_plot' not in self.strategy_indicators:
+                figures += ['train_line_plot', 'stats']
         rows, cols = 1, 1
         row_heights = [1]
 
@@ -92,6 +99,8 @@ class plot_class():
         if save_html:
             plotly.offline.plot(self.fig, filename = f'График фигур для цен акций {self.title}.html')
         if return_plot:
+            clear_output()
+            self.fig.show()
             return self.fig
 
     ## Служебные графики:
@@ -109,11 +118,11 @@ class plot_class():
             row = 1, col = 1)
 
     def stats_plot(self):
-        self.fig.add_annotation(dict(font=dict(color="black",size=14),
+        self.fig.add_annotation(dict(font=dict(color="black",size=self.text_size),
                             x=self.data.df.index[int(len(self.data.df.index)*0.6)],
                             y=1.125,
                             showarrow=False,
-                            text=f'<b>Стартовый капитал: </b>{self.start_money}<br><b>Денег: </b>{self.money}, <b>Акций: </b>{self.shares}<br><b>Текущая доходность:</b> {self.income}<br><b>Кол-во операций:</b> {self.operations}<br><b>Использованные индикаторы: </b>{", ".join(self.strategy_indicators)}',
+                            text=f'<b>Стартовый капитал: </b>{self.start_money}<br><b>Денег: </b>{self.money}, <b>Акций: </b>{self.shares}<br><b>Текущая доходность:</b> {self.income}<br><b>Кол-во операций:</b> {self.operations}<br><b>Использованные индикаторы: </b>{", ".join(self.strategy_indicators[:-2])}',
                             textangle=0,
                             xref="x",
                             yref="paper",

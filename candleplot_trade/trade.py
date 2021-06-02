@@ -1,7 +1,7 @@
 from time import sleep
-from errors import *
+from .errors import *
 import pandas as pd
-from simple_trade import simple_trade
+from .simple_trade import simple_trade
 
 class trade(simple_trade):
     def __init__(self):
